@@ -4,8 +4,28 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { AuthError, AuthApiError } from "@supabase/supabase-js";
 
 type AuthMode = "signin" | "signup";
+
+const getErrorMessage = (error: AuthError) => {
+  if (error instanceof AuthApiError) {
+    switch (error.status) {
+      case 400:
+        if (error.message.includes("Invalid login credentials")) {
+          return "Invalid email or password. Please check your credentials and try again.";
+        }
+        return error.message;
+      case 422:
+        return "Invalid email format. Please enter a valid email address.";
+      case 429:
+        return "Too many attempts. Please try again later.";
+      default:
+        return error.message;
+    }
+  }
+  return "An unexpected error occurred. Please try again.";
+};
 
 export const AuthForm = () => {
   const [mode, setMode] = useState<AuthMode>("signin");
@@ -21,13 +41,17 @@ export const AuthForm = () => {
     
     try {
       if (mode === "signin") {
-        await signIn(email, password);
+        const result = await signIn(email, password);
+        if (result?.error) throw result.error;
+        
         toast({
           title: "Welcome back!",
           description: "You have successfully signed in.",
         });
       } else {
-        await signUp(email, password);
+        const result = await signUp(email, password);
+        if (result?.error) throw result.error;
+        
         toast({
           title: "Check your email",
           description: "We've sent you a confirmation link to complete your registration.",
@@ -35,9 +59,13 @@ export const AuthForm = () => {
       }
     } catch (error) {
       console.error("Authentication error:", error);
+      const errorMessage = error instanceof AuthError 
+        ? getErrorMessage(error)
+        : "An unexpected error occurred. Please try again.";
+      
       toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "An error occurred during authentication",
+        title: "Authentication Error",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -79,6 +107,7 @@ export const AuthForm = () => {
             required
             className="w-full"
             disabled={loading}
+            minLength={6}
           />
         </div>
         <Button 
