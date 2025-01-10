@@ -15,18 +15,24 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const { data: event } = useQuery({
+  const { data: event, error } = useQuery({
     queryKey: ["event"],
     queryFn: async () => {
+      console.log("Fetching events for user:", user?.id);
       const { data, error } = await supabase
         .from("events")
         .select("*")
         .eq("created_by", user?.id)
         .order("date", { ascending: true })
         .limit(1)
-        .single();
+        .maybeSingle();
 
-      if (error && error.code !== "PGRST116") throw error;
+      if (error) {
+        console.error("Error fetching event:", error);
+        throw error;
+      }
+      
+      console.log("Fetched event data:", data);
       return data;
     },
     enabled: !!user?.id,
@@ -55,6 +61,18 @@ const Dashboard = () => {
       });
     }
   };
+
+  if (error) {
+    console.error("Error in dashboard:", error);
+    return (
+      <div className="min-h-screen bg-gray-100 p-4">
+        <Card className="p-6">
+          <h2 className="text-xl font-semibold text-red-600 mb-4">Error Loading Dashboard</h2>
+          <p className="text-gray-600">There was a problem loading your dashboard. Please try again later.</p>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100">
