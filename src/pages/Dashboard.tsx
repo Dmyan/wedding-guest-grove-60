@@ -4,12 +4,33 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { RSVPStats } from "@/components/dashboard/RSVPStats";
+import { CountdownTimer } from "@/components/dashboard/CountdownTimer";
+import { TodoList } from "@/components/dashboard/TodoList";
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const { data: event } = useQuery({
+    queryKey: ["event"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("events")
+        .select("*")
+        .eq("created_by", user?.id)
+        .order("date", { ascending: true })
+        .limit(1)
+        .single();
+
+      if (error && error.code !== "PGRST116") throw error;
+      return data;
+    },
+    enabled: !!user?.id,
+  });
 
   useEffect(() => {
     if (!user) {
@@ -49,28 +70,43 @@ const Dashboard = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
-            <div className="space-y-4">
-              <Button className="w-full" onClick={() => navigate("/events/new")}>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {!event ? (
+            <Card className="p-6 lg:col-span-3">
+              <h2 className="text-xl font-semibold mb-4">Welcome!</h2>
+              <p className="text-gray-600 mb-4">
+                Get started by creating your first event.
+              </p>
+              <Button onClick={() => navigate("/events/new")}>
                 Create New Event
               </Button>
-              <Button className="w-full" variant="outline" onClick={() => navigate("/guests")}>
-                Manage Guests
-              </Button>
-            </div>
-          </Card>
-
-          <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Recent Events</h2>
-            <p className="text-gray-600">No events created yet.</p>
-          </Card>
-
-          <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">RSVP Statistics</h2>
-            <p className="text-gray-600">No RSVP data available.</p>
-          </Card>
+            </Card>
+          ) : (
+            <>
+              <div className="lg:col-span-2 space-y-6">
+                <CountdownTimer date={event.date} />
+                <TodoList eventId={event.id} />
+              </div>
+              <div className="space-y-6">
+                <RSVPStats eventId={event.id} />
+                <Card className="p-6">
+                  <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
+                  <div className="space-y-4">
+                    <Button className="w-full" onClick={() => navigate("/guests")}>
+                      Manage Guests
+                    </Button>
+                    <Button
+                      className="w-full"
+                      variant="outline"
+                      onClick={() => navigate("/events/edit")}
+                    >
+                      Edit Event
+                    </Button>
+                  </div>
+                </Card>
+              </div>
+            </>
+          )}
         </div>
       </main>
     </div>
