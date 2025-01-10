@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { RSVPStats } from "@/components/dashboard/RSVPStats";
+import { RSVPReminders } from "@/components/rsvp/RSVPReminders";
 import { CountdownTimer } from "@/components/dashboard/CountdownTimer";
 import { TodoList } from "@/components/dashboard/TodoList";
 
@@ -107,6 +108,7 @@ const Dashboard = () => {
               </div>
               <div className="space-y-6">
                 <RSVPStats eventId={event.id} />
+                <RSVPReminders eventId={event.id} />
                 <Card className="p-6">
                   <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
                   <div className="space-y-4">
