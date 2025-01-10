@@ -9,6 +9,94 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      events: {
+        Row: {
+          created_at: string
+          created_by: string
+          date: string
+          description: string | null
+          id: string
+          location: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          date: string
+          description?: string | null
+          id?: string
+          location: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          date?: string
+          description?: string | null
+          id?: string
+          location?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      guests: {
+        Row: {
+          accessibility_needs: string | null
+          created_at: string
+          dietary_preferences: string | null
+          email: string | null
+          event_id: string
+          id: string
+          name: string
+          phone: string | null
+          rsvp_status: Database["public"]["Enums"]["rsvp_status"]
+          updated_at: string
+        }
+        Insert: {
+          accessibility_needs?: string | null
+          created_at?: string
+          dietary_preferences?: string | null
+          email?: string | null
+          event_id: string
+          id?: string
+          name: string
+          phone?: string | null
+          rsvp_status?: Database["public"]["Enums"]["rsvp_status"]
+          updated_at?: string
+        }
+        Update: {
+          accessibility_needs?: string | null
+          created_at?: string
+          dietary_preferences?: string | null
+          email?: string | null
+          event_id?: string
+          id?: string
+          name?: string
+          phone?: string | null
+          rsvp_status?: Database["public"]["Enums"]["rsvp_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guests_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -39,6 +127,44 @@ export type Database = {
         }
         Relationships: []
       }
+      tasks: {
+        Row: {
+          completed: boolean
+          created_at: string
+          due_date: string | null
+          event_id: string
+          id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          completed?: boolean
+          created_at?: string
+          due_date?: string | null
+          event_id: string
+          id?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          completed?: boolean
+          created_at?: string
+          due_date?: string | null
+          event_id?: string
+          id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tasks_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -47,6 +173,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      rsvp_status: "confirmed" | "pending" | "declined"
       user_role: "admin" | "guest"
     }
     CompositeTypes: {
