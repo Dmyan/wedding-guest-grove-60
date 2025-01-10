@@ -13,12 +13,6 @@ export const AuthForm = () => {
   const { signIn, signUp } = useAuth();
   const { toast } = useToast();
 
-  const validateEmail = (email: string) => {
-    // RFC 5322 compliant email regex
-    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-    return emailRegex.test(email);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -26,15 +20,6 @@ export const AuthForm = () => {
       toast({
         title: "Error",
         description: "Please fill in all fields",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      toast({
-        title: "Error",
-        description: "Please enter a valid email address",
         variant: "destructive",
       });
       return;
