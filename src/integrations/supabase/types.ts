@@ -9,7 +9,115 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      events: {
+        Row: {
+          created_at: string | null
+          created_by: string
+          date: string
+          description: string | null
+          id: string
+          location: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by: string
+          date: string
+          description?: string | null
+          id?: string
+          location: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string
+          date?: string
+          description?: string | null
+          id?: string
+          location?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      guests: {
+        Row: {
+          accessibility_needs: string | null
+          attendee_count: number | null
+          created_at: string | null
+          dietary_preferences: string | null
+          event_id: string | null
+          id: string
+          rsvp_status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          accessibility_needs?: string | null
+          attendee_count?: number | null
+          created_at?: string | null
+          dietary_preferences?: string | null
+          event_id?: string | null
+          id?: string
+          rsvp_status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          accessibility_needs?: string | null
+          attendee_count?: number | null
+          created_at?: string | null
+          dietary_preferences?: string | null
+          event_id?: string | null
+          id?: string
+          rsvp_status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guests_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tasks: {
+        Row: {
+          completed: boolean | null
+          created_at: string | null
+          event_id: string | null
+          id: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          completed?: boolean | null
+          created_at?: string | null
+          event_id?: string | null
+          id?: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          completed?: boolean | null
+          created_at?: string | null
+          event_id?: string | null
+          id?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tasks_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
