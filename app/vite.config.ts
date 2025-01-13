@@ -5,16 +5,10 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  // // // base: "/wedding-guest-grove-60/app/dist/",
-  // // base: mode === "production" ? "/wedding-guest-grove-60/app/" : "/", // Base path for production
-  // base: "/wedding-guest-grove-60/app/",
-  
-  base: "/wedding-guest-grove-60/",
-
   // 
   // without `base` works perfectally for `npx`
   //
-  
+  base: "/wedding-guest-grove-60/",
   build: {
     // outDir: "/app/dist",
     chunkSizeWarningLimit: 1600,

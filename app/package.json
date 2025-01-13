@@ -20,7 +20,7 @@
     "build:prd:run": "vite build --mode production",
     
     "deploy:dev": "npm run build:dev && npx serve dist",
-    "deploy:git": "npm run build:prd && gh-pages -d dist --clean"
+    "deploy:git": "npm run build:prd && gh-pages -d dist"
   },
   "dependencies": {
     "gh-pages": "^4.0.0",
