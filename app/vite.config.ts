@@ -8,6 +8,8 @@ export default defineConfig(({ mode }) => ({
   // // // base: "/wedding-guest-grove-60/app/dist/",
   // // base: mode === "production" ? "/wedding-guest-grove-60/app/" : "/", // Base path for production
   // base: "/wedding-guest-grove-60/app/",
+  
+  base: "/wedding-guest-grove-60/",
 
   // 
   // without `base` works perfectally for `npx`
