@@ -20,7 +20,7 @@ install-dependencies:
 	@echo "==> Ensuring required dependencies are installed..."
 	@$(MAKE) --no-print-directory install-gh-pages
 	@$(MAKE) --no-print-directory install-npm-run-all
-	@echo "  --> All requirements are attended!"
+	@echo "  --> All requirements are attended !"
 
 build: build-dev
 deploy: deploy-dev
@@ -35,8 +35,22 @@ build-prd: clean install-dependencies
 
 deploy-dev: build-dev
 	@echo "==> Serving the project locally (development mode)..."
-	@npx serve dist
+	@npx serve dist --no-clipboard
 
-deploy-prd: build
-	@echo "==> Deploying the project (production mode)..."
+# deploy-pro:
+# 	@echo "==> Deploying the project (production mode)..."
+# 	@npx gh-pages -d dist
+
+deploy-git:
+	@echo "==> Publishing the project (Github Pages)..."
+	@$(MAKE) --no-print-directory build-prd
 	@npx gh-pages -d dist
+
+	@echo "==> Serving the project (Github Pages)..."
+	# @echo "  --> Homepage: $(shell node -p "require('./package.json').homepage")"
+
+	@echo "========================================="
+	@echo "          \033[32mServing!\033[0m"
+	@echo ""
+	@echo "  \033[32m- Deployed to:\033[0m   $(shell node -p "require('./package.json').homepage")"
+	@echo "========================================="

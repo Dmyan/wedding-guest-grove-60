@@ -1,3 +1,19 @@
+# Old
+```
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:dev": "vite build --mode development",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "install:git-deploy-dev": "npm install gh-pages --save-dev",
+    "install:git-deploy": "npm install gh-pages --save-prod",
+    "install:run-all": "npm install npm-run-all",
+    "build:prd": "vite build --mode production",
+    "deploy": "npm run build && gh-pages -d dist",
+    "deploy:dev": "npm run build:dev && npx serve dist",
+    "deploy:prd": "npm run build:prd && gh-pages -d dist"
+```
 # Welcome to your Lovable project
 
 ## Project info
