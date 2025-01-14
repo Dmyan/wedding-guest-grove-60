@@ -7,16 +7,23 @@ export default defineConfig(({ mode }) => ({
   // 
   // without `base` works perfectally for `npx`
   //
+  
   base: mode === "production" ? "/wedding-guest-grove-60/" : "/", 
+  
+  // base: "/wedding-guest-grove-60/",
+  
   build: {
-    // Define o diretório de saída do build
-    outDir: "dist", 
-
+    // // Define o diretório de saída do build
+    // outDir: "dist", 
+    
+    // // assetsDir: "assets/",
+    // assetsDir: "assets/",
+    
     // Aviso para arquivos grandes no build (ajuste conforme necessário)
     chunkSizeWarningLimit: 1600,
 
-    // Geração de source maps para facilitar a depuração
-    sourcemap: mode === "production" ? false : true,
+    // // Geração de source maps para facilitar a depuração
+    // sourcemap: mode === "production" ? false : true,
   },
   server: {
     host: "::",

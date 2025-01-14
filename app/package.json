@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://dmyan.github.io/wedding-guest-grove-60/app/",
+  "homepage": "https://dmyan.github.io/wedding-guest-grove-60/",
   "scripts": {
     "dev": "vite",
     "lint": "eslint .",
